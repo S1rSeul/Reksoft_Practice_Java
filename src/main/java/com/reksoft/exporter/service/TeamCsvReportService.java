@@ -1,12 +1,10 @@
 package com.reksoft.exporter.service;
 
-import com.reksoft.exporter.model.Player;
 import com.reksoft.exporter.model.Team;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,13 +27,7 @@ public class TeamCsvReportService extends AbstractCsvReportService<Team> {
         return new String[]{
                 String.valueOf(team.getId()),
                 team.getName(),
-                formatPlayerNames(team.getPlayers())
+                String.join(", ", team.getPlayersCombinedNames())
         };
-    }
-
-    private String formatPlayerNames(List<Player> players) {
-        return players.stream()
-                .map(Player::getCombinedName)
-                .collect(Collectors.joining(", "));
     }
 }

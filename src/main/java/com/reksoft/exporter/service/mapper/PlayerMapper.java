@@ -12,7 +12,12 @@ public class PlayerMapper {
         player.setCountry(dto.getCountry());
         player.setNickname(dto.getNickName());
         player.setCombinedName(dto.getCombinedName());
+        player.setFullName(getFullName(dto));
         player.setTeamName(dto.getTeamName());
         return player;
+    }
+
+    private String getFullName(PlayerViewDto dto) {
+        return String.format("%s \"%s\" %s", dto.getName(), dto.getNickName(), dto.getSurname());
     }
 }
