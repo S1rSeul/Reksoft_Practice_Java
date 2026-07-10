@@ -2,9 +2,8 @@ package com.reksoft.exporter.service;
 
 import com.opencsv.CSVWriter;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public abstract class AbstractCsvReportService<T> implements CsvReportService {
@@ -13,11 +12,17 @@ public abstract class AbstractCsvReportService<T> implements CsvReportService {
         List<T> items = getData();
         File file = new File(filePath);
 
-        try (CSVWriter writer = new CSVWriter(new FileWriter(file))) {
-            writer.writeNext(getHeaders());
+        try (FileOutputStream fos = new FileOutputStream(file);
+             Writer writer = new OutputStreamWriter(fos, StandardCharsets.UTF_8)) {
+
+            fos.write(new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF}); // Запись BOM
+
+            CSVWriter csvWriter = new CSVWriter(writer);
+            csvWriter.writeNext(getHeaders());
             for (T item : items) {
-                writer.writeNext(mapToRow(item));
+                csvWriter.writeNext(mapToRow(item));
             }
+            csvWriter.close();
         }
         return file;
     }

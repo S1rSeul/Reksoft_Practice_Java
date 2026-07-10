@@ -28,7 +28,7 @@ public class PlayerCsvReportService extends AbstractCsvReportService<Player> {
                 String.valueOf(player.getId()),
                 player.getCombinedName(),
                 player.getNickname(),
-                player.getCountry() != null ? String.valueOf(player.getCountry()) : "",
+                player.getCountry(),
                 player.getTeamName(),
                 player.getFullName()
         };
